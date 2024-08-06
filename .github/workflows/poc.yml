@@ -50,8 +50,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          AI_CONTENT="${{ steps.read_response.outputs.ai_content }}"
-          COMMENT_BODY="## AI Response:\n\n${AI_CONTENT}"
+          AI_CONTENT=$(cat response_content.txt)
+          COMMENT_BODY="${AI_CONTENT}"
           ISSUE_NUMBER=${{ github.event.issue.number }}
           curl -s -X POST "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments" \
             -H "Authorization: token $GITHUB_TOKEN" \
