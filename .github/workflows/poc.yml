@@ -42,16 +42,16 @@ jobs:
       - name: Read AI Response
         id: read_response
         run: |
-          AI_CONTENT=$(cat response_content.txt)
-          cat response_content.txt
-          echo "::set-output name=ai_content::$AI_CONTENT"
+          AI_CONTENT=$(<response_content.txt)
+          AI_CONTENT_ESCAPED=$(echo "$AI_CONTENT" | jq -R .)
+          echo "::set-output name=ai_content::$AI_CONTENT_ESCAPED"
 
       - name: Add AI Response as Comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           AI_CONTENT="${{ steps.read_response.outputs.ai_content }}"
-          COMMENT_BODY="$AI_CONTENT"
+          COMMENT_BODY="## AI Response:\n\n${AI_CONTENT}"
           ISSUE_NUMBER=${{ github.event.issue.number }}
           curl -s -X POST "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments" \
             -H "Authorization: token $GITHUB_TOKEN" \
