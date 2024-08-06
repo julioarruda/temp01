@@ -33,7 +33,7 @@ jobs:
                   "content": "Essa é a descrição da Issue: ${{ steps.extract_description.outputs.description }}"
                 }
               ],
-              "model": "Meta-Llama-3-8B-Instruct",
+              "model": "gpt-4o-mini",
               "temperature": 0.8,
               "max_tokens": 4096,
               "top_p": 0.1
