@@ -10,11 +10,6 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: Extract issue description
-        id: extract_description
-        run: echo "::set-output name=description::${{ github.event.issue.body }}"
-
-      - run: echo "${{ github.event.issue.body }}"
 
       - name: Send to AI Service
         id: ai_response
@@ -30,7 +25,7 @@ jobs:
                 },
                 {
                   "role": "user",
-                  "content": "Essa é a descrição da Issue: ${{ steps.extract_description.outputs.description }}"
+                  "content": "Essa é a descrição da Issue: ${{ github.event.issue.body }}"
                 }
               ],
               "model": "gpt-4o-mini",
