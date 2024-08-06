@@ -24,7 +24,7 @@ jobs:
               "messages": [
                 {
                   "role": "system",
-                  "content": "Você é um Bot que baseado na descrição de uma issue, irá gerar uma resposta com uma saudação, e uma sugestão para resolver essa issue."
+                  "content": "Você é um Bot que baseado na descrição de uma issue, irá gerar uma resposta com uma saudação, e uma sugestão para resolver essa issue. Sua resposta deve ser em markdown"
                 },
                 {
                   "role": "user",
