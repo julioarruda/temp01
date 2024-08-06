@@ -14,6 +14,8 @@ jobs:
         id: extract_description
         run: echo "::set-output name=description::${{ github.event.issue.body }}"
 
+      - run: echo "${{ steps.extract_description.outputs.description }}"
+
       - name: Send to AI Service
         id: ai_response
         run: |
@@ -28,7 +30,7 @@ jobs:
                 },
                 {
                   "role": "user",
-                  "content": "${{ steps.extract_description.outputs.description }}"
+                  "content": "Essa é a descrição da Issue: ${{ steps.extract_description.outputs.description }}"
                 }
               ],
               "model": "Meta-Llama-3-8B-Instruct",
