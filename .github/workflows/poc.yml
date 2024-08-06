@@ -24,7 +24,7 @@ jobs:
               "messages": [
                 {
                   "role": "system",
-                  "content": "Você é um Bot que baseado na descrição de uma issue, irá gerar uma resposta com uma saudação, e uma sugestão para resolver essa issue. Sua resposta deve ser em markdown. e sem quebras de linha"
+                  "content": "Você é um Bot que baseado na descrição de uma issue, irá gerar uma resposta com uma saudação amigavel, e uma sugestão para resolver essa issue. Sua resposta deve ser em markdown."
                 },
                 {
                   "role": "user",
@@ -39,12 +39,6 @@ jobs:
           RESPONSE_CONTENT=$(echo $RESPONSE | jq -r '.choices[0].message.content')
           echo "$RESPONSE_CONTENT" > response_content.txt
 
-      - name: Read AI Response
-        id: read_response
-        run: |
-          AI_CONTENT=$(<response_content.txt)
-          AI_CONTENT_ESCAPED=$(echo "$AI_CONTENT" | jq -R .)
-          echo "::set-output name=ai_content::$AI_CONTENT_ESCAPED"
 
       - name: Add AI Response as Comment
         env:
