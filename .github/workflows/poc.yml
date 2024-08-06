@@ -14,7 +14,7 @@ jobs:
         id: extract_description
         run: echo "::set-output name=description::${{ github.event.issue.body }}"
 
-      - run: echo "${{ steps.extract_description.outputs.description }}"
+      - run: echo "${{ github.event.issue.body }}"
 
       - name: Send to AI Service
         id: ai_response
