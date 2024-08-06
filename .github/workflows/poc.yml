@@ -17,9 +17,9 @@ jobs:
       - name: Send to AI Service
         id: ai_response
         run: |
-          RESPONSE=$(curl -s -X POST "$INFERENCE_API_URL" \
+          RESPONSE=$(curl -s -X POST "{{ secrets.INFERENCE_API_URL }}" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $INFERENCE_API_TOKEN" \
+            -H "Authorization: Bearer {{ secrets.INFERENCE_API_TOKEN }}" \
             -d '{
               "messages": [
                 {
