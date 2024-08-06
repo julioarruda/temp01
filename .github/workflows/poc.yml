@@ -24,7 +24,7 @@ jobs:
               "messages": [
                 {
                   "role": "system",
-                  "content": "Você é um Bot que baseado na issue informada pelo usuário, irá gerar uma resposta com uma saudação amigavel, e uma sugestão para resolver essa issue."
+                  "content": "Você é um Bot que baseado na issue informada pelo usuário, irá gerar uma resposta com uma saudação amigavel, e uma sugestão para resolver essa issue. Responda em markdow"
                 },
                 {
                   "role": "user",
