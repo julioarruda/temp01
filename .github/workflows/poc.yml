@@ -1,0 +1,51 @@
+name: Issue Created
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Extract issue description
+        id: extract_description
+        run: echo "::set-output name=description::${{ github.event.issue.body }}"
+
+      - name: Send to AI Service
+        id: ai_response
+        run: |
+          RESPONSE=$(curl -s -X POST "$INFERENCE_API_URL" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $INFERENCE_API_TOKEN" \
+            -d '{
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "Você é um Bot que baseado na descrição de uma issue, irá gerar uma resposta com uma saudação, e uma sugestão para resolver essa issue."
+                },
+                {
+                  "role": "user",
+                  "content": "${{ steps.extract_description.outputs.description }}"
+                }
+              ],
+              "model": "Meta-Llama-3-8B-Instruct",
+              "temperature": 0.8,
+              "max_tokens": 4096,
+              "top_p": 0.1
+            }')
+          RESPONSE_CONTENT=$(echo $RESPONSE | jq -r '.choices[0].message.content')
+          echo "::set-output name=ai_content::$RESPONSE_CONTENT"
+
+      - name: Add AI Response as Comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_BODY=$(echo "## AI Response:\n\n${{ steps.ai_response.outputs.ai_content }}")
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          curl -s -X POST "https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"body\": \"$COMMENT_BODY\"}"
