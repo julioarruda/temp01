@@ -41,6 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cat response_content.txt
           AI_CONTENT=$(cat response_content.txt)
           COMMENT_BODY="${AI_CONTENT}"
           ISSUE_NUMBER=${{ github.event.issue.number }}
